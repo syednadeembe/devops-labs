@@ -1,0 +1,17 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: lab-cleanup
+  namespace: devops-labs
+spec:
+  schedule: "*/30 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: lab-cleanup
+          containers:
+          - name: cleanup
+            image: syednadeembe/lab-cleanup:latest
+          restartPolicy: OnFailure
+

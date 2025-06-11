@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: backend-config
+  namespace: devops-labs
+data:
+  LAB_IMAGE: syednadeem/ttyd-lab:latest
+  DOMAIN: 13.200.227.6
+  NAMESPACE_PREFIX: lab-
+

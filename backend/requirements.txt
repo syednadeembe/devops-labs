@@ -1,0 +1,5 @@
+fastapi
+uvicorn
+kubernetes>=26.1.0
+python-jose
+passlib[bcrypt]

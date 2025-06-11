@@ -1,0 +1,20 @@
+FROM ubuntu:22.04
+
+# Install core tools
+RUN apt-get update && apt-get install -y \
+    bash curl vim git wget ca-certificates net-tools iputils-ping docker.io
+
+# Install kubectl (stable version)
+RUN bash -c 'set -ex && \
+    KUBECTL_VERSION=$(curl -Ls https://dl.k8s.io/release/stable.txt | grep -oE "v[0-9]+\.[0-9]+\.[0-9]+") && \
+    curl -LO "https://dl.k8s.io/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl" && \
+    install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl && \
+    rm kubectl'
+
+# Install ttyd
+RUN wget https://github.com/tsl0922/ttyd/releases/download/1.7.7/ttyd.x86_64 \
+    -O /usr/local/bin/ttyd && chmod +x /usr/local/bin/ttyd
+
+# Default CMD
+CMD ["ttyd","--writable", "-p", "7681", "bash"]
+
