@@ -61,7 +61,13 @@ A Kubernetes-powered platform for **interview-based DevOps hands-on labs**, allo
 - `kubectl` + `helm` configured
 - DockerHub (to push your images)
 - Domain or public IP
+- helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+- helm repo update
 
+helm install ingress-nginx ingress-nginx/ingress-nginx \
+  --namespace ingress-nginx --create-namespace \
+  --set controller.publishService.enabled=true \
+  --set controller.service.type=ClusterIP
 ---
 
 ### 🐳 2. Build & Push Docker Images
