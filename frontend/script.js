@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const password = document.getElementById("password").value;
 
     try {
-      const tokenResponse = await fetch("http://13.200.227.6:30080/token", {
+      const tokenResponse = await fetch("http://lab-backend.devops-labs.svc.cluster.local/token", {
         method: "POST",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const token = tokenData.access_token;
       localStorage.setItem("access_token", token);
 
-      const sessionResponse = await fetch("http://13.200.227.6:30081/api/lab-session", {
+      const sessionResponse = await fetch("http://devops-labs.devops-labs.svc.cluster.local/api/lab-session", {
         method: "GET",
         headers: {
           "accept": "application/json",
@@ -69,7 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       const sessionId = sessionData.message.split("session ID: ")[1];
-      const labUrl = `http://13.200.227.6:30082/labs/${sessionId}`;
+      const labUrl = `http://ingress-nginx-controller.ingress-nginx.svc.cluster.local/labs/${sessionId}`;
 
       waitForTerminal(labUrl);
 
