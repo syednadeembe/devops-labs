@@ -22,7 +22,7 @@
     }
     h1 {
       margin-bottom: 10px;
-	  padding-top: 20px;
+      padding-top: 20px;
       font-size: 2rem;
     }
     form {
@@ -72,7 +72,7 @@
   </style>
 </head>
 <body>
-  <h1>DevOps XLabs</h1>
+  <h1>DevOps Labs</h1>
   <form id="login-form">
     <input type="text" id="username" placeholder="Username" required />
     <input type="password" id="password" placeholder="Password" required />
@@ -87,13 +87,16 @@
   <script>
     document.getElementById('login-form').addEventListener('submit', async function (e) {
       e.preventDefault();
+
       const username = document.getElementById('username').value;
       const password = document.getElementById('password').value;
+
+      // Show loading, hide login
       document.getElementById('login-form').style.display = 'none';
       document.getElementById('loading').style.display = 'block';
 
       try {
-        const tokenResponse = await fetch("http://lab-backend.devops-labs.svc.cluster.local/token", {
+        const tokenResponse = await fetch("/api/token", {
           method: "POST",
           headers: { "Content-Type": "application/x-www-form-urlencoded" },
           body: `username=${username}&password=${password}`,
@@ -105,9 +108,10 @@
           location.reload();
           return;
         }
+
         const token = tokenData.access_token;
 
-        const sessionResponse = await fetch("http://session-service.devops-labs.svc.cluster.local/api/lab-session", {
+        const sessionResponse = await fetch("/api/session", {
           headers: {
             "Authorization": `Bearer ${token}`,
             "Accept": "application/json"
@@ -122,8 +126,9 @@
         }
 
         const sessionId = sessionData.message.split(": ")[1].trim();
-        const terminalURL = `http://ingress-nginx-controller.ingress-nginx.svc.cluster.local/labs/${sessionId}`;
+        const terminalURL = `/labs/${sessionId}`;
 
+        // Show iframe terminal
         document.getElementById('loading').style.display = 'none';
         document.getElementById('terminal-container').style.display = 'block';
         document.getElementById('terminal-frame').src = terminalURL;
@@ -137,3 +142,4 @@
   </script>
 </body>
 </html>
+
